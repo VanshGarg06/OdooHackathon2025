@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CollabHub - Connect with experienced professionals for collaborative work and mentorship">
+    <meta name="keywords" content="collaboration, mentorship, professional network, teamwork">
+    <title>CollabHub - Collaborative Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <span class="logo-text">CollabHub</span>
+                </a>
+
+                <nav class="nav-menu">
+                    <div class="nav-items">
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                            <i class="fas fa-sun" id="themeIcon"></i>
+                        </button>
+                        <a href="#" class="login-btn" onclick="handleLogin(); return false;">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-background">
+            <div class="bg-decoration bg-decoration-1"></div>
+            <div class="bg-decoration bg-decoration-2"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="feature-badges">
+                    <div class="badge">
+                        <i class="fas fa-users"></i>
+                        <span>Expert Network</span>
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-comments"></i>
+                        <span>Real-time Chat</span>
+                    </div>
+                    <div class="badge">
+                        <i class="fas fa-bullseye"></i>
+                        <span>Goal-Oriented</span>
+                    </div>
+                </div>
+
+                <div class="hero-main">
+                    <h1 class="hero-title">
+                        Collaborative Work with
+                        <span class="gradient-text">Experienced People</span>
+                    </h1>
+                    
+                    <p class="hero-description">
+                        Begin your journey with collaboration and discuss with experienced people who can guide you towards success
+                    </p>
+                </div>
+
+                <a href="#" class="cta-button" onclick="handleGetStarted(); return false;">
+                    <span>Get Started</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+
+                <div class="trust-indicators">
+                    <div class="indicator">
+                        <div class="indicator-number">1000+</div>
+                        <div class="indicator-label">Expert Members</div>
+                    </div>
+                    <div class="indicator">
+                        <div class="indicator-number">500+</div>
+                        <div class="indicator-label">Active Projects</div>
+                    </div>
+                    <div class="indicator">
+                        <div class="indicator-number">95%</div>
+                        <div class="indicator-label">Success Rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose CollabHub?</h2>
+                <p>Discover the features that make collaboration effortless and productive</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Expert Network</h3>
+                    <p>Connect with industry professionals and experienced mentors</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon teal">
+                        <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <h3>Real-time Communication</h3>
+                    <p>Instant messaging and video calls for seamless collaboration</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Goal-Oriented</h3>
+                    <p>Set clear objectives and track progress with your team</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon yellow">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Fast Results</h3>
+                    <p>Accelerate your projects with proven methodologies</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Platform</h3>
+                    <p>Enterprise-grade security for all your collaborations</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon purple">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock assistance from our dedicated team</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Logo and description -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon" style="padding: 0.375rem; font-size: 1rem;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span class="logo-text">CollabHub</span>
+                    </div>
+                    <p class="footer-description">
+                        Connecting professionals and fostering collaboration for innovative solutions and successful projects.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="alert('About Us page coming soon!'); return false;">About Us</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#" onclick="alert('Pricing page coming soon!'); return false;">Pricing</a></li>
+                        <li><a href="#" onclick="alert('Support page coming soon!'); return false;">Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>contact</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>contact</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>address</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

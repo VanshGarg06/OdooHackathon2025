@@ -11,7 +11,7 @@ $question_id = $_POST['question_id'];
 $body = $_POST['body'];
 $user_id = $_SESSION['user']['id'];
 
-$stmt = $conn->prepare("INSERT INTO responses (question_id, user_id, body) VALUES (?, ?, ?)");
+$stmt = $conn->prepare("insert into responses (question_id, user_id, text) VALUES (?, ?, ?)");
 $stmt->bind_param("iis", $question_id, $user_id, $body);
 $stmt->execute();
 

@@ -16,7 +16,7 @@ if (empty($text) || empty($questionId)) {
     exit;
 }
 
-$stmt = $conn->prepare("INSERT INTO responses (question_id, user_id, text) VALUES (?, ?, ?)");
+$stmt = $conn->prepare("insert into responses (question_id, user_id, text) VALUES (?, ?, ?)");
 $stmt->bind_param("iis", $questionId, $userId, $text);
 if ($stmt->execute()) {
     echo json_encode(['status' => 'success', 'id' => $stmt->insert_id]);

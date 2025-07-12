@@ -29,7 +29,7 @@ if (strlen($title) < 10 || strlen($body) < 20) {
 }
 
 // Insert into database
-$stmt = $conn->prepare("INSERT INTO questions (user_id, title, body, tags) VALUES (?, ?, ?, ?)");
+$stmt = $conn->prepare("insert into questions (userID, QuestionTitle, QuestionsDescription, QuestionTags) VALUES (?, ?, ?, ?)");
 $stmt->bind_param("isss", $user_id, $title, $body, $tags);
 
 if ($stmt->execute()) {

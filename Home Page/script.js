@@ -227,56 +227,36 @@ function hideResponseForm() {
 
 function submitResponse() {
     const responseText = document.getElementById('responseText').value.trim();
-
+    
     if (!responseText) {
         showNotification('Please enter a response', 'error');
         return;
     }
-
+    
     if (!currentUser) {
         showNotification('Please login to submit a response', 'warning');
         return;
     }
-
-    const questionId = document.querySelector('[data-question-id]')?.getAttribute('data-question-id');
-    if (!questionId) {
-        showNotification('Missing question ID', 'error');
-        return;
-    }
-
-    // Disable button temporarily
-    submitResponseBtn.disabled = true;
-    submitResponseBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-
-    fetch('/../backend/add_response.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `question_id=${encodeURIComponent(questionId)}&text=${encodeURIComponent(responseText)}`
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            const newResponse = {
-                id: data.id,
-                text: responseText,
-                author: currentUser.username,
-                date: new Date(),
-                votes: 0
-            };
-            addResponseToDOM(newResponse);
-            hideResponseForm();
-            showNotification('Response added successfully!', 'success');
-        } else {
-            showNotification(data.message || 'Failed to add response', 'error');
-        }
-    })
-    .catch(() => showNotification('Server error. Try again later.', 'error'))
-    .finally(() => {
-        submitResponseBtn.disabled = false;
-        submitResponseBtn.innerHTML = 'Post Response';
-    });
+    
+    // Create new response
+    const newResponse = {
+        id: Date.now(),
+        text: responseText,
+        author: currentUser.username,
+        date: new Date(),
+        votes: 0
+    };
+    
+    // Add to responses array
+    responses.push(newResponse);
+    
+    // Add to DOM
+    addResponseToDOM(newResponse);
+    
+    // Hide form and show success message
+    hideResponseForm();
+    showNotification('Response added successfully!', 'success');
 }
-
 
 function addResponseToDOM(response) {
     const responsesSection = document.querySelector('.responses-section');
@@ -339,111 +319,91 @@ function handleSearch(e) {
 function handleLogin(e) {
     e.preventDefault();
     const form = e.target;
-    const email = form.email.value.trim();
-    const password = form.password.value.trim();
+    const email = form.email.value;
+    const password = form.password.value;
+    const remember = form.remember.checked;
 
     if (!email || !password) {
         showNotification('Please fill in all fields', 'error');
         return;
     }
-
+    
+    // Show loading state
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
     submitBtn.disabled = true;
-
-    fetch('/../backend/checkuser.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            currentUser = {
-                username: data.username,
-                email: email
-            };
-            hideModal(loginModal);
-            updateUI();
-            showNotification(`Welcome back, ${currentUser.username}!`, 'success');
-        } else {
-            showNotification(data.message || 'Login failed', 'error');
-        }
-    })
-    .catch(() => showNotification('Server error. Try again later.', 'error'))
-    .finally(() => {
+    
+    // Simulate login
+    setTimeout(() => {
+        currentUser = {
+            id: 1,
+            username: email.split('@')[0],
+            email: email
+        };
+        
+        hideModal(loginModal);
+        updateUI();
+        showNotification(`Welcome back, ${currentUser.username}!`, 'success');
+        
+        // Reset button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-    });
+    }, 1500);
 }
-
-
 
 function handleSignup(e) {
     e.preventDefault();
     const form = e.target;
-    const username = form.username.value.trim();
-    const email = form.email.value.trim();
+    const username = form.username.value;
+    const email = form.email.value;
     const password = form.password.value;
     const confirmPassword = form.confirmPassword.value;
     const termsAccepted = form.terms.checked;
-
+    
     if (!username || !email || !password || !confirmPassword) {
         showNotification('Please fill in all fields', 'error');
         return;
     }
-
+    
     if (password !== confirmPassword) {
         showNotification('Passwords do not match', 'error');
         return;
     }
-
+    
     if (password.length < 6) {
         showNotification('Password must be at least 6 characters long', 'error');
         return;
     }
-
+    
     if (!termsAccepted) {
         showNotification('Please accept the terms of service', 'error');
         return;
     }
-
+    
+    // Show loading state
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
     submitBtn.disabled = true;
-
-    fetch('/../backend/save_user.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `action=signup&username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            currentUser = {
-                username: data.username,
-                email: email
-            };
-            hideModal(signupModal);
-            updateUI();
-            showNotification(`Welcome, ${currentUser.username}! Your account has been created.`, 'success');
-        } else {
-            showNotification(data.message || 'Signup failed', 'error');
-        }
-    })
-    .catch(() => showNotification('Server error. Try again later.', 'error'))
-    .finally(() => {
+    
+    // Simulate signup
+    setTimeout(() => {
+        currentUser = {
+            id: Date.now(),
+            username: username,
+            email: email
+        };
+        
+        hideModal(signupModal);
+        updateUI();
+        showNotification(`Welcome, ${currentUser.username}! Your account has been created.`, 'success');
+        
+        // Reset button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-    });
+    }, 2000);
 }
-
 
 // Ask Question Functions
 function handleAskQuestionClick() {
@@ -452,7 +412,7 @@ function handleAskQuestionClick() {
         setTimeout(() => showModal(loginModal), 500);
         return;
     }
-
+    
     showModal(document.getElementById('askQuestionModal'));
 }
 
@@ -462,72 +422,58 @@ function handleAskQuestion(e) {
     const title = form.title.value.trim();
     const body = form.body.value.trim();
     const tags = form.tags.value.trim();
-
+    
     if (!title || !body) {
         showNotification('Please fill in the title and description', 'error');
         return;
     }
-
+    
     if (!currentUser) {
         showNotification('Please login to ask a question', 'warning');
         return;
     }
-
+    
     if (title.length < 10) {
         showNotification('Question title must be at least 10 characters long', 'error');
         return;
     }
-
+    
     if (body.length < 20) {
         showNotification('Question description must be at least 20 characters long', 'error');
         return;
     }
-
+    
+    // Show loading state
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting question...';
     submitBtn.disabled = true;
-
+    
     const newQuestion = {
+        id: Date.now(),
         title: title,
         body: body,
         tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-        author_id: currentUser.id // assuming currentUser has `id` from signup/login
+        author: currentUser.username,
+        date: new Date(),
+        votes: 0,
+        views: 0
     };
-
-    fetch('/../backend/ask_question.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newQuestion)
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            hideModal(document.getElementById('askQuestionModal'));
-            showNotification('Question posted successfully!', 'success');
-
-            // You can push to `questions` if needed for local display
-            questions.push({
-                id: data.question.id,
-                ...newQuestion,
-                date: new Date(),
-                votes: 0,
-                views: 0
-            });
-
-        } else {
-            showNotification(data.message || 'Failed to post question', 'error');
-        }
-    })
-    .catch(() => {
-        showNotification('Server error. Please try again later.', 'error');
-    })
-    .finally(() => {
+    
+    // Simulate posting question
+    setTimeout(() => {
+        questions.push(newQuestion);
+        hideModal(document.getElementById('askQuestionModal'));
+        showNotification('Question posted successfully!', 'success');
+        
+        // Reset button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-    });
+        
+        // In a real app, you'd redirect to the new question page
+        console.log('New question:', newQuestion);
+    }, 1500);
 }
-
 
 // Category Navigation
 function handleCategoryClick(e) {
@@ -561,23 +507,16 @@ function updateUI() {
 }
 
 function logout() {
-    fetch('/../backend/logout.php', { method: 'POST' })
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                currentUser = null;
-                updateUI();
-                document.querySelectorAll('.modal.show').forEach(modal => hideModal(modal));
-                showNotification('Logged out successfully', 'success');
-            } else {
-                showNotification('Logout failed', 'error');
-            }
-        })
-        .catch(() => {
-            showNotification('Server error during logout', 'error');
-        });
+    currentUser = null;
+    updateUI();
+    
+    // Close any open modals
+    document.querySelectorAll('.modal.show').forEach(modal => {
+        hideModal(modal);
+    });
+    
+    showNotification('Logged out successfully', 'success');
 }
-
 
 function formatDate(date) {
     const now = new Date();
@@ -659,32 +598,40 @@ function showNotification(message, type = 'info') {
 }
 
 function loadSampleData() {
-    fetch('/../backend/get_data.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                questions = data.questions.map(q => ({
-                    ...q,
-                    date: new Date(q.date) // convert to Date object
-                }));
-
-                responses = data.responses.map(r => ({
-                    ...r,
-                    date: new Date(r.date) // convert to Date object
-                }));
-
-                // You can now call a render function if you have one
-                renderQuestions(); // optional - implement this to show data on UI
-            } else {
-                showNotification('Failed to load questions and responses', 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error loading data:', error);
-            showNotification('Error loading data from server', 'error');
-        });
+    // Sample questions data
+    questions = [
+        {
+            id: 1,
+            title: "How to implement user authentication in a React application?",
+            body: "I'm building a React application and need to implement user authentication...",
+            tags: ["react", "authentication", "jwt", "security"],
+            author: "developer123",
+            date: new Date(Date.now() - 7200000), // 2 hours ago
+            votes: 12,
+            views: 156
+        }
+    ];
+    
+    // Sample responses data
+    responses = [
+        {
+            id: 1,
+            questionId: 1,
+            text: "For React authentication, I recommend using a combination of JWT tokens with httpOnly cookies...",
+            author: "react_expert",
+            date: new Date(Date.now() - 3600000), // 1 hour ago
+            votes: 8
+        },
+        {
+            id: 2,
+            questionId: 1,
+            text: "Building on the previous answer, here are some additional security considerations...",
+            author: "security_dev",
+            date: new Date(Date.now() - 2700000), // 45 minutes ago
+            votes: 5
+        }
+    ];
 }
-
 
 // Add some interactive features for better UX
 document.addEventListener('mouseover', function(e) {
@@ -710,3 +657,56 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+
+// Place this in your script.js or at the bottom of your HTML inside <script>
+function checkValidation(){
+  const signupForm = document.getElementById("signupForm");
+
+  signupForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById("signupUsername").value.trim();
+    const email = document.getElementById("signupEmail").value.trim();
+    const password = document.getElementById("signupPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const termsCheckbox = signupForm.querySelector("input[name='terms']");
+
+    let hasError = false;
+
+    // Reset all field borders
+    signupForm.querySelectorAll("input").forEach((input) => {
+      input.style.borderColor = "#ccc";
+    });
+    termsCheckbox.closest(".checkbox-label").style.outline = "none";
+
+    if (!username || !email || !password || !confirmPassword) {
+      alert("Please fill in all fields.");
+      if (!username) document.getElementById("signupUsername").style.borderColor = "red";
+      if (!email) document.getElementById("signupEmail").style.borderColor = "red";
+      if (!password) document.getElementById("signupPassword").style.borderColor = "red";
+      if (!confirmPassword) document.getElementById("confirmPassword").style.borderColor = "red";
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Toastify({
+        text: "Passwords do not match!",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#f44336",
+      }).showToast();
+      document.getElementById("confirmPassword").style.borderColor = "red";
+      return;
+    }
+
+    if (!termsCheckbox.checked) {
+      termsCheckbox.closest(".checkbox-label").style.outline = "2px solid red";
+      alert("You must agree to the terms of service.");
+      return;
+    }
+
+    // If all validations pass, submit the form
+    signupForm.submit();
+  });
+};

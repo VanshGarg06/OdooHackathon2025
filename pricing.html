@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pricing Page</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    *{
+        margin:0;
+        padding:0;
+    }
+
+    :root {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --bg-quaternary: #f8fafc;
+    --text-primary: #1f2937;
+    --text-secondary: #64748b;
+    --text-tertiary: #374151;
+    --border-primary: #e5e7eb;
+    --border-secondary: #f1f5f9;
+    --accent-primary: #2563eb;
+    --accent-secondary: #1d4ed8;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-error: #ef4444;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-quaternary: #475569;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #e2e8f0;
+    --border-primary: #334155;
+    --border-secondary: #475569;
+    --accent-primary: #3b82f6;
+    --accent-secondary: #2563eb;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-error: #ef4444;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container {
+    width: 100vw;
+    /* border:1px solid black; */
+}
+
+.header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-primary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 1rem 0;
+    gap: 2rem;
+}
+
+.logo h1 {
+    color: var(--accent-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.search-container {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+    display: flex;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-primary);
+    border-radius: 8px 0 0 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.search-input:focus {
+    border-color: var(--accent-primary);
+}
+
+.search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.search-btn {
+    padding: 0.75rem 1rem;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background: var(--accent-secondary);
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.theme-toggle {
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 2px solid var(--border-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+}
+
+.theme-toggle:hover {
+    background: var(--bg-quaternary);
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-primary);
+}
+
+.btn-primary {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+.btn-primary:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 2px solid var(--border-primary);
+}
+
+.btn-outline:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+
+    :root {
+      --bg: #ffffff;
+      --text: #2d2d2d;
+      --card-bg: #fff;
+      --highlight:  #2563eb;
+      --button-bg: #eee;
+      --check-color: #2ecc71;
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1a1a;
+      --text: #f0f0f0;
+      --card-bg: #2a2a2a;
+      --highlight: #fff;
+      --button-bg: #333;
+      --check-color: #2ecc71;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
+      overflow-x:hidden;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .toggle button {
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      background: var(--button-bg);
+      color: var(--text);
+    }
+
+    .toggle button.active {
+      background: var(--highlight);
+      color: var(--bg);
+    }
+
+    .dark-mode-toggle {
+      width:50px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      background: var(--button-bg);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      border: 1px solid var(--highlight);
+      margin-right:0;
+      position:absolute;
+      right:0;
+      margin-right:20px;
+    }
+
+    .plans {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 1.5rem;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      position: relative;
+      transition: background 0.3s ease;
+    }
+
+    .popular {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: var(--highlight);
+      color: var(--bg);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 5px;
+    }
+
+    .price {
+      font-size: 2rem;
+      margin: 1rem 0;
+    }
+
+    .card button {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--button-bg);
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .card .black-btn {
+      background: var(--highlight);
+      color: var(--bg);
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    ul li {
+      margin: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    ul li::before {
+      content: "✔️";
+      position: absolute;
+      left: 0;
+      color: var(--check-color);
+    }
+
+    @media (max-width: 768px) {
+      .plans {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>QuestionHub</h1>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search questions..." id="searchInput">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+                    <button class="theme-toggle dark-mode-toggle" id="themeToggle" aria-label="Toggle theme" onclick="toggleDarkMode()"/>
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+  <h1>Plans & Pricing</h1>
+
+  <div class="top-bar">
+    <div class="toggle">
+      <button class="active" onclick="switchPricing('monthly')">Monthly billing</button>
+      <button onclick="switchPricing('annual')">Annual billing</button>
+    </div>
+  </div>
+
+  <div class="plans" id="pricingCards"></div>
+
+  <script>
+    const plans = {
+      monthly: [
+        {
+          name: "Basic plan",
+          price: 22,
+          button: "Get started",
+          features: [
+            "Basic Profile Customization",
+            "With Ads Experience",
+            "0 featured Questions",
+            "No API Access",
+            "No Support",
+            "No reporting and Analytics"
+          ]
+        },
+        {
+          name: "Business plan",
+          price: 40,
+          popular: true,
+          button: "Get started",
+          features: [
+            "Advanced Profile Customization",
+            "Ads Free Experience",
+            "5 featured Questions",
+            "Limited API Access",
+            "Email Support",
+            "Reporting and Analytics included"
+          ]
+        },
+        {
+          name: "Enterprise plan",
+          price: 64,
+          button: "Get started",
+          features: [
+            "Portfolio Profile Customization",
+            "Ads Free Experience",
+            "20 featured Questions",
+            "Full API Access",
+            "24/7 Chat & Email Support",
+            "Advanced reporting and analytics"
+          ]
+        }
+      ],
+      annual: [
+        {
+          name: "Basic plan",
+          price: 200,
+          button: "Get started",
+          features: [
+            "Basic Profile Customization",
+            "With Ads Experience",
+            "0 featured Questions",
+            "No API Access",
+            "No Support",
+            "No reporting and Analytics"
+          ]
+        },
+        {
+          name: "Business plan",
+          price: 399,
+          popular: true,
+          button: "Get started",
+          features: [
+            "Advanced Profile Customization",
+            "Ads Free Experience",
+            "5 featured Questions",
+            "Limited API Access",
+            "Email Support",
+            "Reporting and Analytics included"
+          ]
+        },
+        {
+          name: "Enterprise plan",
+          price: 799,
+          button: "Get started",
+          features: [
+            "Portfolio Profile Customization",
+            "Ads Free Experience",
+            "20 featured Questions",
+            "Full API Access",
+            "24/7 Chat & Email Support",
+            "Advanced reporting and analytics"
+          ]
+        }
+      ]
+    };
+
+    function renderPlans(type = "monthly") {
+      const container = document.getElementById("pricingCards");
+      container.innerHTML = "";
+      plans[type].forEach(plan => {
+        const card = document.createElement("div");
+        card.className = "card";
+        if (plan.popular) {
+          const badge = document.createElement("div");
+          badge.className = "popular";
+          badge.innerText = "Most popular";
+          card.appendChild(badge);
+        }
+        card.innerHTML += `
+          <h3>${plan.name}</h3>
+          <p class="price">$${plan.price}<span style="font-size: 1rem;">/mo</span></p>
+          <button class="${plan.popular ? 'black-btn' : ''}">${plan.button}</button>
+          <p><strong>FEATURES</strong><br>Everything in ${plan.name.includes('Basic') ? 'free plan' : plan.name.includes('Business') ? 'Basic' : 'Business'} plus…</p>
+          <ul>${plan.features.map(f => `<li>${f}</li>`).join('')}</ul>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function switchPricing(type) {
+      document.querySelectorAll(".toggle button").forEach(btn => btn.classList.remove("active"));
+      document.querySelector(`.toggle button:nth-child(${type === "monthly" ? 1 : 2})`).classList.add("active");
+      renderPlans(type);
+    }
+
+    function toggleDarkMode() {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("theme", newTheme);
+    }
+
+    // Load saved theme from localStorage
+    window.onload = () => {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+      renderPlans();
+    };
+  </script>
+</body>
+</html>

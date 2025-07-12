@@ -1,175 +1,157 @@
-class DisplayModeController {
-    constructor() {
-        this.mode = localStorage.getItem('mode') || 'light';
-        this.toggleBtn = document.getElementById('themeToggle');
-        this.icon = document.getElementById('themeIcon');
-        this.initialize();
-    }
-
-    initialize() {
-        this.applyMode(this.mode);
-        this.toggleBtn.addEventListener('click', () => this.switchMode());
-        window.addEventListener('load', () => {
-            document.body.style.transition = 'color 0.25s, background-color 0.25s';
-        });
-    }
-
-    applyMode(mode) {
-        this.mode = mode;
-        document.documentElement.dataset.theme = mode;
-        localStorage.setItem('mode', mode);
-        this.icon.className = mode === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-        this.animateClick();
-    }
-
-    switchMode() {
-        this.applyMode(this.mode === 'light' ? 'dark' : 'light');
-    }
-
-    animateClick() {
-        this.toggleBtn.style.scale = '0.92';
-        setTimeout(() => {
-            this.toggleBtn.style.scale = '1';
-        }, 120);
-    }
+function showSection(id, button) {
+  document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+  button.classList.add('active');
 }
 
-class UIEffects {
-    constructor() {
-        this.setupReveal();
-        this.enableHovering();
-        this.attachParallax();
-    }
+let userCount = 0;
+let questionCount = 0;
+let answerCount = 0;
 
-    setupReveal() {
-        const opts = { threshold: 0.15, rootMargin: '0px 0px -40px' };
-        const appear = new IntersectionObserver((items) => {
-            items.forEach(i => {
-                if (i.isIntersecting) {
-                    i.target.style.opacity = '1';
-                    i.target.style.translate = '0 0';
-                }
-            });
-        }, opts);
+const answersData = []; // store all answers per question
 
-        document.querySelectorAll('.feature-card, .indicator, .badge').forEach(el => {
-            el.style.opacity = '0';
-            el.style.translate = '0 25px';
-            el.style.transition = 'opacity 0.5s, translate 0.5s';
-            appear.observe(el);
-        });
-    }
-
-    enableHovering() {
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.onmouseenter = () => card.style.transform = 'translateY(-6px) scale(1.015)';
-            card.onmouseleave = () => card.style.transform = 'translateY(0) scale(1)';
-        });
-
-        document.querySelectorAll('.cta-button, .login-btn').forEach(btn => {
-            btn.onmouseenter = () => btn.style.boxShadow = '0 6px 18px rgba(59,130,246,0.35)';
-            btn.onmouseleave = () => btn.style.boxShadow = '0 3px 10px rgba(59,130,246,0.15)';
-        });
-    }
-
-    attachParallax() {
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            document.querySelectorAll('.bg-decoration').forEach((el, i) => {
-                const offset = 0.4 + i * 0.15;
-                el.style.transform = `translateY(${scrollY * offset}px)`;
-            });
-        });
-    }
+function updateCounts() {
+  document.getElementById('userCount').innerText = userCount;
+  document.getElementById('questionCount').innerText = questionCount;
+  document.getElementById('answerCount').innerText = answerCount;
+  updateAnswerOverview();
 }
 
-function enableSmoothAnchors() {
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const target = document.querySelector(link.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    });
+function addUser() {
+  const name = document.getElementById('userName').value.trim();
+  const id = document.getElementById('userId').value.trim();
+  if (name && id) {
+    userCount++;
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <p><strong>${name}</strong> — ID: ${id}</p>
+      <div>
+        <button class="btn btn-delete" onclick="this.closest('.item').remove(); userCount--; updateCounts();">Delete</button>
+        <button class="btn btn-block" onclick="toggleBlock(this)">Block</button>
+      </div>
+    `;
+    document.getElementById('userList').appendChild(div);
+    document.getElementById('userName').value = '';
+    document.getElementById('userId').value = '';
+    updateCounts();
+  }
 }
 
-function headerBehaviorOnScroll() {
-    const nav = document.querySelector('.header');
-    let prevScroll = window.scrollY;
-
-    window.addEventListener('scroll', () => {
-        const curr = window.scrollY;
-
-        if (curr > 100) {
-            const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary').trim() + 'e0';
-            nav.style.background = bg;
-            nav.style.boxShadow = '0 2px 15px rgba(0,0,0,0.08)';
-        } else {
-            nav.style.background = 'rgba(255,255,255,0.75)';
-            nav.style.boxShadow = 'none';
-        }
-
-        nav.style.transform = (curr > prevScroll && curr > 150) ? 'translateY(-100%)' : 'translateY(0)';
-        prevScroll = curr;
-    });
+function toggleBlock(button) {
+  if (button.innerText === 'Block') {
+    button.innerText = 'Unblock';
+    button.style.background = '#6c757d';
+    button.style.color = '#fff';
+  } else {
+    button.innerText = 'Block';
+    button.style.background = '#ffc107';
+    button.style.color = '#333';
+  }
 }
 
-function optimizePerformance() {
-    if ('IntersectionObserver' in window) {
-        const imgObs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.remove('lazy');
-                    imgObs.unobserve(img);
-                }
-            });
-        });
+function addQuestion() {
+  const text = document.getElementById('questionText').value.trim();
+  if (text) {
+    questionCount++;
+    answersData.push([]);
+    const div = document.createElement('div');
+    div.className = 'card question-block';
+    div.innerHTML = `
+      <p><strong>Q${questionCount}: ${text}</strong></p>
+      <input type="text" placeholder="Add answer" class="answer-input" />
+      <button class="btn btn-answer" onclick="addAnswerToQuestion(this, ${questionCount - 1})">Add Answer</button>
+      <div class="answer-list"></div>
+      <button class="btn btn-delete" onclick="deleteQuestion(this, ${questionCount - 1})">Delete Question</button>
+    `;
+    document.getElementById('questionList').appendChild(div);
+    document.getElementById('questionText').value = '';
+    updateCounts();
+  }
+}
 
-        document.querySelectorAll('img[data-src]').forEach(img => imgObs.observe(img));
+function addAnswerToQuestion(button, qIndex) {
+  const questionBlock = button.parentElement;
+  const input = questionBlock.querySelector('.answer-input');
+  const answerText = input.value.trim();
+  if (answerText) {
+    answerCount++;
+    answersData[qIndex].push(answerText);
+
+    const answerDiv = document.createElement('div');
+    answerDiv.className = 'answer-item';
+    answerDiv.innerHTML = `
+      <p>${answerText}</p>
+      <button class="btn btn-delete" onclick="deleteAnswerFromQuestion(this, ${qIndex}, '${answerText}')">Delete Answer</button>
+    `;
+    questionBlock.querySelector('.answer-list').appendChild(answerDiv);
+    input.value = '';
+    updateCounts();
+  }
+}
+
+function deleteQuestion(button, qIndex) {
+  const qBlock = button.parentElement;
+  answerCount -= answersData[qIndex].length;
+  answersData[qIndex] = [];
+  qBlock.remove();
+  questionCount--;
+  updateCounts();
+}
+
+function deleteAnswerFromQuestion(button, qIndex, text) {
+  const aBlock = button.parentElement;
+  const idx = answersData[qIndex].indexOf(text);
+  if (idx !== -1) answersData[qIndex].splice(idx, 1);
+  aBlock.remove();
+  answerCount--;
+  updateCounts();
+}
+
+function updateAnswerOverview() {
+  const overview = document.getElementById('answerOverview');
+  overview.innerHTML = '';
+
+  answersData.forEach((answers, index) => {
+    if (answers.length > 0) {
+      const qDiv = document.createElement('div');
+      qDiv.innerHTML = `<strong>Question #${index + 1}</strong>`;
+      const listDiv = document.createElement('div');
+      listDiv.className = 'answer-overview-list';
+
+      answers.forEach(ans => {
+        const ansP = document.createElement('p');
+        ansP.innerHTML = `
+          <span>${ans}</span>
+          <button class="btn btn-delete" onclick="deleteAnswerFromOverview(${index}, '${ans}')">Delete</button>
+        `;
+        listDiv.appendChild(ansP);
+      });
+
+      qDiv.appendChild(listDiv);
+      overview.appendChild(qDiv);
     }
-
-    let debounce;
-    const existingHandler = window.onscroll;
-    window.addEventListener('scroll', () => {
-        if (debounce) clearTimeout(debounce);
-        debounce = setTimeout(() => {
-            if (existingHandler) existingHandler();
-        }, 12);
-    });
+  });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    new DisplayModeController();
-    new UIEffects();
-    enableSmoothAnchors();
-    headerBehaviorOnScroll();
-    optimizePerformance();
-    setTimeout(() => document.body.classList.add('loaded'), 80);
-});
+function deleteAnswerFromOverview(qIndex, text) {
+  const idx = answersData[qIndex].indexOf(text);
+  if (idx !== -1) answersData[qIndex].splice(idx, 1);
 
-document.addEventListener('visibilitychange', () => {
-    document.body.style.animationPlayState = document.hidden ? 'paused' : 'running';
-});
+  // Remove from Questions section UI
+  const questionBlocks = document.querySelectorAll('#questionList .question-block');
+  const questionBlock = questionBlocks[qIndex];
+  const answerItems = questionBlock.querySelectorAll('.answer-item');
 
-window.addEventListener('error', (e) => {
-    console.warn('Caught error:', e.error);
-});
+  answerItems.forEach(item => {
+    if (item.querySelector('p').innerText === text) {
+      item.remove();
+    }
+  });
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Tab') document.body.classList.add('keyboard-mode');
-});
+  answerCount--;
+  updateCounts();
+}
 
-document.addEventListener('mousedown', () => {
-    document.body.classList.remove('keyboard-mode');
-});
-
-window.CollabHub = {
-    handleLogin,
-    handleGetStarted,
-    DisplayModeController,
-    UIEffects
-};
+updateCounts();

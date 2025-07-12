@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuestionHub - Q&A Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>QuestionHub</h1>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search questions..." id="searchInput">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">Login</button>
+                    <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <aside class="sidebar">
+                    <div class="sidebar-section">
+                        <h3>Categories</h3>
+                        <ul class="category-list">
+                            <li><a href="#" class="category-link active">All Questions</a></li>
+                            <li><a href="#" class="category-link">JavaScript</a></li>
+                            <li><a href="#" class="category-link">HTML/CSS</a></li>
+                            <li><a href="#" class="category-link">PHP</a></li>
+                            <li><a href="#" class="category-link">Database</a></li>
+                            <li><a href="#" class="category-link">General</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3>Popular Tags</h3>
+                        <div class="tags">
+                            <span class="tag">react</span>
+                            <span class="tag">nodejs</span>
+                            <span class="tag">css</span>
+                            <span class="tag">mysql</span>
+                            <span class="tag">api</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="question-container">
+                    <div class="question-card">
+                        <div class="question-header">
+                            <h2 class="question-title">How to implement user authentication in a React application?</h2>
+                            <div class="question-meta">
+                                <span class="author">by <strong>@developer123</strong></span>
+                                <span class="date">2 hours ago</span>
+                                <span class="views">156 views</span>
+                            </div>
+                        </div>
+                        
+                        <div class="question-body">
+                            <p>I'm building a React application and need to implement user authentication. I want to know the best practices for handling login, logout, and protecting routes. Should I use JWT tokens? How do I store them securely?</p>
+                            
+                            <p>I've tried using localStorage but I heard it's not secure. What are the alternatives and how do I implement them properly?</p>
+                            
+                            <div class="question-tags">
+                                <span class="tag">react</span>
+                                <span class="tag">authentication</span>
+                                <span class="tag">jwt</span>
+                                <span class="tag">security</span>
+                            </div>
+                        </div>
+                        
+                        <div class="question-actions">
+                            <div class="voting-section">
+                                <button class="vote-btn upvote" data-action="upvote">
+                                    <i class="fas fa-chevron-up"></i>
+                                    <span class="vote-count">12</span>
+                                </button>
+                                <button class="vote-btn downvote" data-action="downvote">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="btn btn-outline" id="responseBtn">
+                                    <i class="fas fa-reply"></i>
+                                    Add Response
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-bookmark"></i>
+                                    Save
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-share"></i>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="responses-section">
+                        <h3>3 Responses</h3>
+                        
+                        <div class="response-card">
+                            <div class="response-header">
+                                <span class="author">@react_expert</span>
+                                <span class="date">1 hour ago</span>
+                            </div>
+                            <div class="response-body">
+                                <p>For React authentication, I recommend using a combination of JWT tokens with httpOnly cookies for better security. Here's a comprehensive approach:</p>
+                                
+                                <ol>
+                                    <li><strong>Backend Setup:</strong> Use httpOnly cookies to store refresh tokens</li>
+                                    <li><strong>Frontend:</strong> Store access tokens in memory (React state)</li>
+                                    <li><strong>Route Protection:</strong> Create a PrivateRoute component</li>
+                                </ol>
+                                
+                                <p>This approach prevents XSS attacks while maintaining good UX.</p>
+                            </div>
+                            <div class="response-actions">
+                                <button class="vote-btn upvote" data-action="upvote">
+                                    <i class="fas fa-chevron-up"></i>
+                                    <span class="vote-count">8</span>
+                                </button>
+                                <button class="vote-btn downvote" data-action="downvote">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <button class="btn btn-outline btn-sm">Reply</button>
+                            </div>
+                        </div>
+                        
+                        <div class="response-card">
+                            <div class="response-header">
+                                <span class="author">@security_dev</span>
+                                <span class="date">45 minutes ago</span>
+                            </div>
+                            <div class="response-body">
+                                <p>Building on the previous answer, here are some additional security considerations:</p>
+                                
+                                <ul>
+                                    <li>Implement token rotation</li>
+                                    <li>Add CSRF protection</li>
+                                    <li>Use secure, sameSite cookies</li>
+                                    <li>Implement proper logout functionality</li>
+                                </ul>
+                                
+                                <p>Also consider using libraries like Auth0 or Firebase Auth for production applications.</p>
+                            </div>
+                            <div class="response-actions">
+                                <button class="vote-btn upvote" data-action="upvote">
+                                    <i class="fas fa-chevron-up"></i>
+                                    <span class="vote-count">5</span>
+                                </button>
+                                <button class="vote-btn downvote" data-action="downvote">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <button class="btn btn-outline btn-sm">Reply</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="response-form" id="responseForm" style="display: none;">
+                        <h3>Add Your Response</h3>
+                        <textarea placeholder="Share your knowledge and help the community..." id="responseText"></textarea>
+                        <div class="form-actions">
+                            <button class="btn btn-primary" id="submitResponse">Submit Response</button>
+                            <button class="btn btn-outline" id="cancelResponse">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="right-sidebar">
+                    <button class="btn btn-primary ask-question-btn" id="askQuestionBtn">
+                        <i class="fas fa-plus"></i>
+                        Ask Question
+                    </button>
+                    
+                    <div class="sidebar-section">
+                        <h3>Related Questions</h3>
+                        <ul class="related-questions">
+                            <li><a href="#">Best practices for React state management?</a></li>
+                            <li><a href="#">How to secure API endpoints?</a></li>
+                            <li><a href="#">JWT vs Session-based authentication</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3>Top Contributors</h3>
+                        <ul class="contributors">
+                            <li>
+                                <span class="contributor-name">@react_expert</span>
+                                <span class="contributor-points">2,450 pts</span>
+                            </li>
+                            <li>
+                                <span class="contributor-name">@security_dev</span>
+                                <span class="contributor-points">1,890 pts</span>
+                            </li>
+                            <li>
+                                <span class="contributor-name">@fullstack_guru</span>
+                                <span class="contributor-points">1,670 pts</span>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome Back</h2>
+                <button class="modal-close" data-modal="loginModal" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="auth-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" name="email" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" required placeholder="Enter your password">
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+                </form>
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                <div class="social-auth">
+                    <button class="btn btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+                    <button class="btn btn-social btn-github">
+                        <i class="fab fa-github"></i>
+                        Continue with GitHub
+                    </button>
+                </div>
+                <div class="auth-switch">
+                    <p>Don't have an account? <a href="#" id="switchToSignup">Sign up here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="signupModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Join Our Community</h2>
+                <button class="modal-close" data-modal="signupModal" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="auth-form" id="signupForm">
+                    <div class="form-group">
+                        <label for="signupUsername">Username</label>
+                        <input type="text" id="signupUsername" name="username" required placeholder="Choose a username">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" name="email" required placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" name="password" required placeholder="Create a password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+                <div class="social-auth">
+                    <button class="btn btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        Continue with Google
+                    </button>
+                    <button class="btn btn-social btn-github">
+                        <i class="fab fa-github"></i>
+                        Continue with GitHub
+                    </button>
+                </div>
+                <div class="auth-switch">
+                    <p>Already have an account? <a href="#" id="switchToLogin">Sign in here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login</h2>
+                <button class="close-btn" data-modal="loginModal">&times;</button>
+            </div>
+            <form class="modal-form">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sign Up</h2>
+                <button class="close-btn" data-modal="signupModal">&times;</button>
+            </div>
+            <form class="modal-form">
+                <input type="text" placeholder="Username" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="askQuestionModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ask a Question</h2>
+                <button class="modal-close" data-modal="askQuestionModal" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="auth-form" id="askQuestionForm">
+                    <div class="form-group">
+                        <label for="questionTitle">Question Title</label>
+                        <input type="text" id="questionTitle" name="title" required placeholder="What's your programming question?">
+                    </div>
+                    <div class="form-group">
+                        <label for="questionBody">Question Details</label>
+                        <textarea id="questionBody" name="body" required placeholder="Describe your question in detail. Include what you've tried and what specific help you need."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="questionTags">Tags</label>
+                        <input type="text" id="questionTags" name="tags" placeholder="e.g. javascript, react, css (comma separated)">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-plus"></i>
+                        Post Question
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
